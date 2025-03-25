@@ -36,4 +36,6 @@ public class User {
 
     @Column(nullable = false)
     private boolean isActive = true;
+
+
 }
