@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>구매 글 작성</title>
+</head>
+<body>
+<h1>구매 글 작성</h1>
+
+<form th:action="@{/buy/write}" th:object="${buyPostCreateRequestDto}" method="post">
+    <label>제목:
+        <input type="text" th:field="*{title}" required />
+    </label>
+    <br>
+
+    <label>내용:
+        <textarea th:field="*{content}" rows="4" cols="40" required></textarea>
+    </label>
+    <br>
+
+    <label>가격:
+        <input type="number" th:field="*{price}" min="1" required />
+    </label>
+    <br><br>
+
+    <button type="submit">등록</button>
+</form>
+
+<p><a th:href="@{/buy}">← 목록으로</a></p>
+</body>
+</html>

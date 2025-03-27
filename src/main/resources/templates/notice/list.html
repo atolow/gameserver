@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 목록 - Moon Server</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+<div id="root">
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">
+                <i class="fas fa-gamepad"></i>
+                <span>Moon Server</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a th:href="@{/}">홈</a></li>
+                    <li><a th:href="@{/notices}">공지사항</a></li>
+                    <li><a th:href="@{/commands}">명령어</a></li>
+                    <li><a th:href="@{/community}">커뮤니티</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="list-container">
+            <h2>공지사항</h2>
+
+            <!-- 헤더 라벨 -->
+            <div class="article-item" style="font-weight: bold; border-bottom: 2px solid #fff;">
+                <div style="width: 10%;">번호</div>
+                <div style="width: 45%;">제목</div>
+                <div style="width: 25%;">작성자</div>
+                <div style="width: 20%;">작성일</div>
+            </div>
+
+
+            <ul class="c" style="padding-left: 0;">
+                <li class="article-item" th:each="notice, stat : ${notices.content}">
+                    <div style="width: 10%;" th:text="${notices.totalElements - (notices.number * notices.size + stat.index)}">1</div>
+                    <div style="width: 65%;">
+                        <a th:href="@{'/notices/' + ${notice.id}}" class="article-title" th:text="${notice.title}">제목</a>
+                    </div>
+                    <div style="width: 30%;" th:text="${notice.author}">작성자</div>
+                    <div style="width: 30%;" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">2024-05-20</div>
+                </li>
+            </ul>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <span th:if="${notices.hasPrevious()}">
+                    <a th:href="@{/notices(page=${notices.number - 1})}">&laquo;</a>
+                </span>
+                <span th:each="pageNum : ${#numbers.sequence(0, notices.totalPages - 1)}">
+                    <a th:if="${pageNum != notices.number}"
+                       th:href="@{/notices(page=${pageNum})}"
+                       th:text="${pageNum + 1}">페이지</a>
+                    <span th:if="${pageNum == notices.number}" th:text="${pageNum + 1}" class="current"></span>
+                </span>
+                <span th:if="${notices.hasNext()}">
+                    <a th:href="@{/notices(page=${notices.number + 1})}">&raquo;</a>
+                </span>
+            </div>
+            <div class="write-button-container" sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/notices/create}">
+                    <button class="write-button">글쓰기</button>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Moon Server 운영팀</p>
+    </footer>
+</div>
+</body>
+
+</html>

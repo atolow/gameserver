@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+<head>
+    <meta charset="UTF-8">
+    <title>아이템 상세</title>
+</head>
+<body>
+
+<h1>🧩 아이템 상세</h1>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <td th:text="${item.id}">1</td>
+    </tr>
+    <tr>
+        <th>이름</th>
+        <td th:text="${item.name}">아이템 이름</td>
+    </tr>
+    <tr>
+        <th>설명</th>
+        <td th:text="${item.description}">아이템 설명</td>
+    </tr>
+    <tr>
+        <th>가격</th>
+        <td th:text="${item.price}">1000</td>
+    </tr>
+    <tr>
+        <th>판매 여부</th>
+        <td th:text="${item.sold} ? '판매 완료' : '판매 중'">판매 중</td>
+    </tr>
+</table>
+
+<br>
+
+<a th:href="@{/admin/items}">← 목록으로 돌아가기</a>
+
+<!-- 🔧 관리자만 수정/삭제 가능 -->
+<div sec:authorize="hasAuthority('ADMIN')">
+    <hr>
+    <form th:action="@{'/admin/items/' + ${item.id} + '/edit'}" method="get" style="display:inline;">
+        <button type="submit">✏️ 수정</button>
+    </form>
+
+    <form th:action="@{'/admin/items/' + ${item.id} + '/delete'}" method="get" style="display:inline;">
+        <button type="submit">🗑️ 삭제</button>
+    </form>
+</div>
+
+</body>
+</html>
