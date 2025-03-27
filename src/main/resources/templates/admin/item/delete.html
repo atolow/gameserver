@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>아이템 삭제 확인</title>
+</head>
+<body>
+
+<h1>🗑️ 아이템 삭제</h1>
+
+<p>정말로 이 아이템을 삭제하시겠습니까?</p>
+
+<form th:action="@{'/admin/items/' + ${itemId} + '/delete'}" method="post">
+    <button type="submit">삭제하기</button>
+</form>
+
+<p><a th:href="@{'/admin/items/' + ${itemId}}">← 아이템 상세보기로 돌아가기</a></p>
+<p><a th:href="@{/admin/items}">← 목록으로 돌아가기</a></p>
+
+</body>
+</html>

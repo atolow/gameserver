@@ -1,0 +1,28 @@
+<!-- 목록 테이블 -->
+<tbody>
+<tr th:each="post, stat : ${postPage.content}">
+    <td th:text="${postPage.totalElements - (postPage.number * postPage.size + stat.index)}"></td>
+    <td>
+        <a th:href="@{/buy/{id}(id=${post.id})}" th:text="${post.title}">제목</a>
+    </td>
+    <td th:text="${post.username}">작성자</td>
+    <td th:text="${#numbers.formatInteger(post.price, 1, 'COMMA')} + ' 원'">가격</td>
+    <td th:text="${post.completed} ? '완료' : '진행중'">상태</td>
+</tr>
+</tbody>
+
+<!-- 페이징 영역 -->
+<div>
+    <span th:if="${postPage.hasPrevious()}">
+        <a th:href="@{/buy(page=${postPage.number - 1})}">이전</a>
+    </span>
+
+    <span th:each="i : ${#numbers.sequence(0, postPage.totalPages - 1)}">
+        <a th:if="${i != postPage.number}" th:href="@{/buy(page=${i})}" th:text="${i + 1}">페이지</a>
+        <span th:if="${i == postPage.number}" th:text="${i + 1}"></span>
+    </span>
+
+    <span th:if="${postPage.hasNext()}">
+        <a th:href="@{/buy(page=${postPage.number + 1})}">다음</a>
+    </span>
+</div>

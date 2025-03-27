@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 탈퇴 - 게임 운영 홈페이지</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
+              <text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+</head>
+
+<body>
+<div class="leave-container">
+    <h2>회원 탈퇴</h2>
+    <p class="warning-message">
+        정말로 탈퇴하시겠습니까?<br>
+        <strong style="color: #f39c12;">탈퇴 후에는 모든 정보가 복구되지 않습니다.</strong>
+    </p>
+
+    <form id="deactivateForm" th:action="@{/users/deactivate}" method="post">
+        <button type="submit" class="leave-button">탈퇴하기</button>
+    </form>
+
+    <a th:href="@{/users/me}" class="cancel-link">취소</a>
+</div>
+
+<!-- 확인창 스크립트 -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('deactivateForm');
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                const confirmed = confirm("정말로 탈퇴하시겠습니까?\n탈퇴 후에는 모든 정보가 삭제됩니다.");
+                if (!confirmed) {
+                    e.preventDefault(); // 사용자가 '취소' 선택 시 폼 제출 방지
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

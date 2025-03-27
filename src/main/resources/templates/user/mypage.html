@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 - 게임 운영 홈페이지</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+</head>
+
+<body>
+<div class="mypage-container">
+    <h2>마이페이지</h2>
+    <form id="mypageForm">
+        <div class="form-group">
+            <label for="username">아이디</label>
+            <input type="text" id="username" name="username" th:value="${user.username}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="email">이메일</label>
+            <input type="email" id="email" name="email" th:value="${user.email}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="balance">캐시</label>
+            <input type="balance" id="balance" name="balance" th:value="${user.balance}" readonly>
+        </div>
+    </form>
+
+    <div class="action-buttons">
+        <form th:action="@{/}" method="get" style="display: inline-block;">
+            <button type="submit">홈</button>
+        </form>
+        <form th:action="@{/users/change-password}" method="get" style="display: inline-block;">
+            <button type="submit">비밀번호 변경</button>
+        </form>
+        <form th:action="@{/users/deactivate}" method="get" style="display: inline-block;">
+            <button type="submit" class="delete-account-button">회원 탈퇴</button>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

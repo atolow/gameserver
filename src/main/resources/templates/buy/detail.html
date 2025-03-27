@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>구매 글 상세</title>
+</head>
+<body>
+<h1>구매 글 상세</h1>
+
+<p><strong>제목:</strong> <span th:text="${post.title}"></span></p>
+<p><strong>내용:</strong> <span th:text="${post.content}"></span></p>
+<p><strong>가격:</strong> <span th:text="${post.price}"></span> 원</p>
+<p><strong>작성자:</strong> <span th:text="${post.username}"></span></p>
+<p><strong>상태:</strong> <span th:text="${post.completed} ? '완료' : '진행중'"></span></p>
+
+<form th:action="@{/buy/{id}/delete(id=${post.id})}" method="post">
+    <button type="submit">삭제</button>
+</form>
+<form th:action="@{/buy/{id}/complete(id=${post.id})}" method="post">
+    <button type="submit">거래 완료</button>
+</form>
+<p><a th:href="@{/buy/{id}/edit(id=${post.id})}">수정</a></p>
+<p><a th:href="@{/buy}">← 목록으로</a></p>
+</body>
+</html>
