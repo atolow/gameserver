@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -97,4 +99,14 @@ public class UserController {
         userService.deactivateUser(userDetails.getUser().getId());
         return "redirect:/logout";
     }
+
+    @GetMapping("/balances")
+    public String getBalances(Model model) {
+        List<Object[]> balances = userService.getBalanceSortedByBalance();
+        model.addAttribute("balances", balances);
+
+        System.out.println("Balances: " + balances);
+        return "balances/balances";  // templates/user/balances.html
+    }
+
 }

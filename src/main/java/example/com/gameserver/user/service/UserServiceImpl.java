@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 import static example.com.gameserver.utils.EntityValidator.*;
 
 @Slf4j
@@ -93,5 +95,9 @@ public class UserServiceImpl implements UserService {
         return balance != null ? balance : 0.0;  // balance가 null이면 0.0을 반환
     }
 
+
+    public List<Object[]> getBalanceSortedByBalance() {
+        return userRepository.findBalanceFromCMIUsers();
+    }
 
 }

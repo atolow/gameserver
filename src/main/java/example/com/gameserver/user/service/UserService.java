@@ -2,6 +2,8 @@ package example.com.gameserver.user.service;
 
 import example.com.gameserver.user.dto.*;
 
+import java.util.List;
+
 public interface UserService {
 
     /**
@@ -31,6 +33,6 @@ public interface UserService {
     Double getBalanceForUser(String username);
 
 
-
+    List<Object[]> getBalanceSortedByBalance();
 
 }

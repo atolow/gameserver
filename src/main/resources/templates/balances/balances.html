@@ -1,34 +1,44 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>명령어 등록</title>
+    <title>Moon Server 홈페이지</title>
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-          integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon"
-          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎮</text></svg>">
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    <style>
+        td {
+            padding: 10px; /* 여백 추가 */
+        }
+    </style>
 </head>
 
 <body>
 <div id="root">
     <header>
         <div class="header-content">
-            <a th:href="@{/}" class="logo">
+            <a href="#" class="logo">
                 <i class="fas fa-gamepad"></i>
                 <span>Moon Server</span>
             </a>
             <nav>
                 <ul>
                     <li><a th:href="@{/}">홈</a></li>
-                    <li><a th:href="@{/notices}">공지사항</a></li> <!-- 이건 서버 URL로 이동 -->
+                    <li><a th:href="@{/notices}">공지사항</a></li>
                     <li><a th:href="@{/commands}">명령어</a></li>
                     <li><a th:href="@{/boards}">커뮤니티</a></li>
                     <li><a th:href="@{/users/balances}">돈</a></li>
+
                 </ul>
             </nav>
+
             <!-- 로그인 전 -->
             <div class="login-form" sec:authorize="isAnonymous()">
                 <form method="post" action="/login">
@@ -37,7 +47,6 @@
                     <button type="submit">로그인</button>
                 </form>
             </div>
-
 
             <!-- 로그인 후 -->
             <div class="login-form" sec:authorize="isAuthenticated()" style="align-items: center;">
@@ -55,24 +64,28 @@
     </header>
 
     <main>
-        <div class="write-container">
-            <h2>명령어 등록</h2>
-            <form th:action="@{/commands}" th:object="${commandCreateRequestDto}" method="post">
-                <div class="form-group">
-                    <label for="title">제목</label>
-                    <input type="text" id="title" th:field="*{title}" placeholder="제목을 입력하세요">
-                </div>
-                <div class="form-group">
-                    <label for="content">내용</label>
-                    <textarea id="content" th:field="*{content}" placeholder="내용을 입력하세요"></textarea>
-                </div>
-
-                <div class="write-buttons">
-                    <button type="submit">저장</button>
-                    <a th:href="@{/commands}"><button type="button" class="cancel-button">취소</button></a>
-                </div>
-            </form>
-        </div>
+        <section id="home" class="active">
+            <div class="hero">
+                <h2>유저의 잔액 정보</h2>
+                <table style="margin-left: auto; margin-right: auto;">
+                    <thead>
+                    <tr>
+                        <th>아이디</th>
+                        <th>마크 돈</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="balance : ${balances}">
+                        <td th:text="${balance[0]}"></td> <!-- Username -->
+                        <td th:text="${balance[1]}"></td> <!-- Balance -->
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(balances)}">
+                        <td colspan="2">데이터가 없습니다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -80,5 +93,4 @@
     </footer>
 </div>
 </body>
-
 </html>
