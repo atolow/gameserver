@@ -12,7 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static example.com.gameserver.utils.EntityValidator.*;
 
@@ -97,7 +99,23 @@ public class UserServiceImpl implements UserService {
 
 
     public List<Object[]> getBalanceSortedByBalance() {
-        return userRepository.findBalanceFromCMIUsers();
+        List<Object[]> results = userRepository.findBalanceFromCMIUsers();
+
+        // 소수점 두 번째 자리까지 포맷
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        return results.stream()
+                .map(result -> {
+                    String username = (String) result[0];
+                    Double balance = (Double) result[1];
+
+                    // balance 값 포맷팅
+                    String formattedBalance = df.format(balance);
+
+                    // 결과 배열을 새롭게 반환 (formattedBalance로 변환)
+                    return new Object[]{username, formattedBalance};
+                })
+                .collect(Collectors.toList());
     }
 
 }
