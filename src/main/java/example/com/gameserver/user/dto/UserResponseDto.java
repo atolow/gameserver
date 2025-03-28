@@ -13,19 +13,19 @@ public class UserResponseDto {
     private final String realName;
     private final String email;
     private final String phoneNumber;
-    private final double balance;
+    private final Integer cash;
     private final UserRole role;
     private final boolean isActive;
 
     @Builder
     public UserResponseDto(Long id, String username, String realName, String email,
-                           String phoneNumber, double balance, UserRole role, boolean isActive) {
+                           String phoneNumber, Integer cash, UserRole role, boolean isActive) {
         this.id = id;
         this.username = username;
         this.realName = realName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.balance = balance;
+        this.cash = cash;
         this.role = role;
         this.isActive = isActive;
     }
@@ -37,7 +37,7 @@ public class UserResponseDto {
                 .realName(user.getRealName())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
-                .balance(user.getBalance())
+                .cash(user.getCash())
                 .role(user.getRole())
                 .isActive(user.isActive())
                 .build();

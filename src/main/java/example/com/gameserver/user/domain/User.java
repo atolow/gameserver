@@ -30,7 +30,9 @@ public class User  extends TimeBaseEntity {
     private String password;
 
     @Column(nullable = false)
-    private double balance;
+    private Integer cash;
+
+    private double balances;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -40,22 +42,22 @@ public class User  extends TimeBaseEntity {
     private boolean isActive = true;
 
     @Builder
-    public User(String username, String realName, String email, String phoneNumber, String password, double balance, UserRole role, boolean isActive) {
+    public User(String username, String realName, String email, String phoneNumber, String password, Integer cash, UserRole role, boolean isActive) {
         this.username = username;
         this.realName = realName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.balance = balance;
+        this.cash = cash;
         this.role = role;
         this.isActive = isActive;
     }
 
-    public User(String username, String email, String password, double balance, UserRole role, boolean isActive) {
+    public User(String username, String email, String password, Integer cash, UserRole role, boolean isActive) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.balance = balance;
+        this.cash = cash;
         this.role = role;
         this.isActive = isActive;
     }
@@ -67,9 +69,9 @@ public class User  extends TimeBaseEntity {
         this.password = encodedPassword;
     }
     public void deductBalance(int amount) {
-        if (this.balance < amount) {
+        if (this.cash < amount) {
             throw new IllegalArgumentException("잔액 부족");
         }
-        this.balance -= amount;
+        this.cash -= amount;
     }
 }

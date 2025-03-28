@@ -28,6 +28,8 @@ public interface UserService {
 
     void deactivateUser(Long userId);
 
+    Double getBalanceForUser(String username);
+
 
 
 

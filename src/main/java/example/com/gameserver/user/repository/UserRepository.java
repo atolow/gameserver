@@ -2,6 +2,8 @@ package example.com.gameserver.user.repository;
 
 import example.com.gameserver.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -36,4 +38,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return findByPhoneNumber(phoneNumber).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }
 
+    @Query(value = "SELECT o.balance FROM CMI_users o WHERE o.username = :username", nativeQuery = true)
+    Double findBalanceByUsername(@Param("username") String username);
 }
+

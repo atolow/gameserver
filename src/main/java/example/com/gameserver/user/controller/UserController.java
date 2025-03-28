@@ -73,9 +73,17 @@ public class UserController {
     // 🔎 마이페이지 (내 정보)
     @GetMapping("/me")
     public String myPage(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        // 사용자 정보 가져오기
         UserResponseDto user = userService.getUserById(userDetails.getUser().getId());
+
+        // balance 정보 가져오기 (서비스에서 이미 null 체크 및 기본값 0.0 처리)
+        Double balance = userService.getBalanceForUser(userDetails.getUser().getUsername());
+
+        // 모델에 사용자 정보와 balance 값 추가
         model.addAttribute("user", user);
-        return "user/mypage"; // templates/user/mypage.html
+        model.addAttribute("balance", balance);  // balance 값을 추가
+
+        return "user/mypage";  // templates/user/mypage.html
     }
 
 
