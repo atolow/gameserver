@@ -12,11 +12,27 @@
           crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon"
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
 <div class="login-container">
     <h2>로그인</h2>
+
+    <!-- SweetAlert2 경고 메시지 -->
+    <div th:if="${param.error}">
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '로그인 실패',
+                text: '아이디 또는 비밀번호가 옳지 않습니다.',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#3498db'
+            });
+        </script>
+    </div>
 
     <!-- 로그인 폼 -->
     <form method="post" action="/login">

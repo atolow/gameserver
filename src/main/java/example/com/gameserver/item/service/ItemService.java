@@ -1,6 +1,7 @@
 package example.com.gameserver.item.service;
 
 import example.com.gameserver.item.dto.*;
+import example.com.gameserver.notice.dto.NoticeResponseDto;
 import example.com.gameserver.user.domain.User;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface ItemService {
     List<ItemListResponseDto> getAll(User user);
     void delete(Long id,User user);
     void checkAdmin(User user);
+
+
 }

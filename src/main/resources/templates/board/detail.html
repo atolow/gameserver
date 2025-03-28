@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${board.title}">상세 페이지</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎮</text></svg>">
+</head>
+
+<body>
+<div id="root">
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">
+                <i class="fas fa-gamepad"></i>
+                <span>Moon Server</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a th:href="@{/}">홈</a></li>
+                    <li><a th:href="@{/notices}">공지사항</a></li>
+                    <li><a th:href="@{/commands}">명령어</a></li>
+                    <li><a th:href="@{/boards}">커뮤니티</a></li>
+                </ul>
+            </nav>
+
+            <div class="login-form" sec:authorize="isAnonymous()">
+                <form method="post" action="/login">
+                    <input type="text" name="username" placeholder="아이디" required>
+                    <input type="password" name="password" placeholder="비밀번호" required>
+                    <button type="submit">로그인</button>
+                </form>
+            </div>
+
+            <div class="login-form" sec:authorize="isAuthenticated()" style="align-items: center;">
+                <div style="display: flex; align-items: center;">
+                    <p style="margin: 0; font-size: 1rem;">
+                        <span style="color: #f39c12; font-weight: bold;" th:text="${#authentication.name}"></span>
+                        <span style="color: #ffffff;">님 환영합니다.</span>
+                    </p>
+                    <form th:action="@{/logout}" method="post" style="margin-left: 1rem;">
+                        <button type="submit" class="login-button">로그아웃</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="detail-container">
+            <h2>커뮤니티</h2>
+            <hr>
+            <p>
+                <strong th:text="${board.title}">제목</strong><br>
+                <span th:text="${board.username}">작성자</span> |
+                <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
+            </p>
+
+            <!-- ✅ 자동 높이 조절되는 textarea -->
+            <textarea id="boardContent"
+                      readonly
+                      oninput="resize(this)"
+                      class="auto-resize-textarea"
+                      style="border: none; outline: none; resize: none; width: 100%; background-color: transparent;"
+                      th:text="${board.content}">
+
+            </textarea>
+
+            <!-- ✅ 수정/삭제 버튼 -->
+            <div class="detail-buttons" sec:authorize="hasRole('NEWBIE') or hasRole('ADMIN')">
+                <a th:href="@{'/boards/' + ${board.id} + '/edit'}">
+                    <button class="edit-button">수정</button>
+                </a>
+                <form th:action="@{'/boards/' + ${board.id} + '/delete'}" method="post" style="display:inline;">
+                    <button type="submit" onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ✅ 댓글 영역 -->
+        <div class="comment-section">
+            <h3>댓글</h3>
+
+            <!-- 댓글 목록 -->
+            <div class="comment-list">
+                <div class="comment-item"
+                     th:each="comment : ${board.comments}"
+                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+
+                    <!-- 댓글 왼쪽: 작성자 + 날짜 + 내용 -->
+                    <div style="flex: 1;">
+                        <p class="comment-author">
+                            <strong th:text="${comment.username}">작성자</strong>
+                            <span class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
+                        </p>
+
+                        <!-- ✅ 댓글 내용 textarea -->
+                        <textarea readonly class="auto-resize-textarea"
+                                  oninput="resize(this)"
+                                  style="width: 100%; resize: none; border: 1px solid #ccc; padding: 0.5rem; border-radius: 4px;"
+                                  th:text="${comment.content}">
+            </textarea>
+                    </div>
+
+                    <!-- 댓글 오른쪽: 삭제 버튼 -->
+                    <div class="comment-actions"
+                         th:if="${#authentication.name == comment.username or #authorization.expression('hasRole(''ADMIN'')')}"
+                         style="margin-left: 1rem; display: flex; align-items: center;">
+                        <form th:action="@{'/boards/' + ${board.id} + '/comments/' + ${comment.id} + '/delete'}"
+                              method="post"
+                              onsubmit="return confirm('댓글을 삭제하시겠습니까?');">
+                            <button type="submit" class="delete-button"
+                                    style="background-color: #e74c3c; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer;">
+                                삭제
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- 댓글 작성 폼 -->
+            <div class="comment-form" sec:authorize="isAuthenticated()">
+                <form th:action="@{'/boards/' + ${board.id} + '/comments'}" method="post">
+                    <textarea name="content" placeholder="댓글을 입력하세요..." required></textarea>
+                    <button type="submit">댓글 작성</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Moon Server Start</p>
+    </footer>
+</div>
+
+
+
+<!-- ✅ 여기에 넣어줘 -->
+<script>
+    window.addEventListener("load", () => {
+        // 글 본문 textarea
+        const contentBox = document.getElementById("boardContent");
+        if (contentBox) {
+            contentBox.style.height = "auto";
+            contentBox.style.height = contentBox.scrollHeight + "px";
+        }
+
+        // 댓글 textarea들
+        document.querySelectorAll(".auto-resize-textarea").forEach(textarea => {
+            textarea.style.height = "auto";
+            textarea.style.height = textarea.scrollHeight + "px";
+        });
+    });
+
+    function resize(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+</script>
+
+</body>
+</html>

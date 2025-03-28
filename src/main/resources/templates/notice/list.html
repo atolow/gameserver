@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공지사항 목록 - Moon Server</title>
+    <title>공지사항</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
           integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
 
 <body>
@@ -22,12 +22,36 @@
             </a>
             <nav>
                 <ul>
-                    <li><a th:href="@{/}">홈</a></li>
-                    <li><a th:href="@{/notices}">공지사항</a></li>
-                    <li><a th:href="@{/commands}">명령어</a></li>
-                    <li><a th:href="@{/community}">커뮤니티</a></li>
+                    <ul>
+                        <li><a th:href="@{/}">홈</a></li>
+                        <li><a th:href="@{/notices}">공지사항</a></li> <!-- 이건 서버 URL로 이동 -->
+                        <li><a th:href="@{/commands}">명령어</a></li>
+                        <li><a th:href="@{/boards}">커뮤니티</a></li>
+                    </ul>
                 </ul>
             </nav>
+            <!-- 로그인 전 -->
+            <div class="login-form" sec:authorize="isAnonymous()">
+                <form method="post" action="/login">
+                    <input type="text" name="username" placeholder="아이디" required>
+                    <input type="password" name="password" placeholder="비밀번호" required>
+                    <button type="submit">로그인</button>
+                </form>
+            </div>
+
+
+            <!-- 로그인 후 -->
+            <div class="login-form" sec:authorize="isAuthenticated()" style="align-items: center;">
+                <div style="display: flex; align-items: center;">
+                    <p style="margin: 0; font-size: 1rem;">
+                        <span style="color: #f39c12; font-weight: bold;" th:text="${#authentication.name}"></span>
+                        <span style="color: #ffffff;">님 환영합니다.</span>
+                    </p>
+                    <form th:action="@{/logout}" method="post" style="margin-left: 1rem;">
+                        <button type="submit" class="login-button">로그아웃</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -46,12 +70,16 @@
 
             <ul class="c" style="padding-left: 0;">
                 <li class="article-item" th:each="notice, stat : ${notices.content}">
-                    <div style="width: 10%;" th:text="${notices.totalElements - (notices.number * notices.size + stat.index)}">1</div>
+                    <div style="width: 10%;"
+                         th:text="${notices.totalElements - (notices.number * notices.size + stat.index)}">1
+                    </div>
                     <div style="width: 65%;">
-                        <a th:href="@{'/notices/' + ${notice.id}}" class="article-title" th:text="${notice.title}">제목</a>
+                        <a th:href="@{'/notices/' + ${notice.id}}" class="article-title"
+                           th:text="${notice.title}">제목</a>
                     </div>
                     <div style="width: 30%;" th:text="${notice.author}">작성자</div>
-                    <div style="width: 30%;" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">2024-05-20</div>
+                    <div style="width: 30%;" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">2024-05-20
+                    </div>
                 </li>
             </ul>
 
@@ -79,7 +107,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 Moon Server 운영팀</p>
+        <p>&copy; 2025 Moon Server Start</p>
     </footer>
 </div>
 </body>

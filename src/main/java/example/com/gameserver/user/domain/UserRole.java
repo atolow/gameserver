@@ -1,6 +1,10 @@
 package example.com.gameserver.user.domain;
 
 public enum UserRole {
-    NEWBIE,   // 일반 유저
-    ADMIN     // 운영자
+    ADMIN, NEWBIE;
+
+    @Override
+    public String toString() {
+        return "ROLE_" + name();
+    }
 }

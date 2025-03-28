@@ -14,7 +14,7 @@ public class User  extends TimeBaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 30)
+    @Column(nullable = false, unique = true, length = 15)
     private String username;
 
 //    @Column(nullable = false, length = 50)
@@ -26,7 +26,7 @@ public class User  extends TimeBaseEntity {
 //    @Column(nullable = false, unique = true, length = 15)
     private String phoneNumber;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String password;
 
     @Column(nullable = false)

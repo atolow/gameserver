@@ -33,6 +33,18 @@
     </form>
     <a href="/login" class="login-link">이미 계정이 있으신가요? 로그인</a>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div th:if="${errorMessage}">
+    <script th:inline="javascript">
+        Swal.fire({
+            icon: 'error',
+            title: '회원가입 실패',
+            text: [[${errorMessage}]],
+            confirmButtonText: '확인'
+        });
+    </script>
+</div>
+</body>
 </body>
 
 </html>

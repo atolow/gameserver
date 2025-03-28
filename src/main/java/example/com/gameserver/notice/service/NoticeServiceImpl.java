@@ -3,17 +3,14 @@ package example.com.gameserver.notice.service;
 import example.com.gameserver.notice.domain.Notice;
 import example.com.gameserver.notice.dto.*;
 import example.com.gameserver.notice.repository.NoticeRepository;
-import example.com.gameserver.trade.dto.BuyPostCreateResponseDto;
 import example.com.gameserver.user.domain.User;
+import example.com.gameserver.user.domain.UserRole;
 import example.com.gameserver.user.repository.UserRepository;
-import example.com.gameserver.utils.EntityValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static example.com.gameserver.utils.EntityValidator.validateIsAdmin;
 
@@ -45,6 +42,13 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    public NoticeResponseDto getByIdEdit(Long id,User user) {
+        validateIsAdmin(user);
+        Notice notice = noticeRepository.findByIdOrElseThrow(id);
+        return NoticeResponseDto.from(notice);
+    }
+
+    @Override
     public Page<NoticeResponseDto> getAll(Pageable pageable) {
         return noticeRepository.findAllByOrderByIdDesc(pageable)
                 .map(NoticeResponseDto::from);
@@ -55,7 +59,7 @@ public class NoticeServiceImpl implements NoticeService {
     public NoticeResponseDto update(Long id, NoticeUpdateRequestDto requestDto, User user) {
         validateIsAdmin(user);
         Notice notice = noticeRepository.findByIdOrElseThrow(id);
-        if (!notice.getUser().getId().equals(user.getId())) {
+        if(!user.getId().equals(notice.getUser().getId()) || !user.getRole().equals(UserRole.ADMIN)){
             throw new IllegalStateException("수정 권한이 없습니다.");
         }
         notice.update(requestDto.getTitle(), requestDto.getContent());

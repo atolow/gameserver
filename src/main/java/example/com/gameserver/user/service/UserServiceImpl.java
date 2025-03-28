@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import static example.com.gameserver.utils.EntityValidator.*;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,9 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
+        validateEmail(requestDto.getEmail());
+        validatePassword(requestDto.getPassword());
+        validateUsername(requestDto.getUsername());
 
         User user = User.builder()
                 .username(requestDto.getUsername())
