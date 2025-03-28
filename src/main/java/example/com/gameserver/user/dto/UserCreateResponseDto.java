@@ -13,13 +13,13 @@ public class UserCreateResponseDto {
     private final String realName;
     private final String email;
     private final String phoneNumber;
-    private final int balance;
+    private final double balance;
     private final UserRole role;
     private final boolean active;
 
     @Builder
     public UserCreateResponseDto(Long id, String username, String realName, String email,
-                                 String phoneNumber, int balance, UserRole role, boolean active) {
+                                 String phoneNumber, double balance, UserRole role, boolean active) {
         this.id = id;
         this.username = username;
         this.realName = realName;
