@@ -27,8 +27,12 @@
             <input type="email" id="email" name="email" th:value="${user.email}" readonly>
         </div>
         <div class="form-group">
-            <label for="balance">캐시</label>
-            <input type="balance" id="balance" name="balance" th:value="${user.balance}" readonly>
+            <label for="cash">캐시</label>
+            <input type="cash" id="cash" name="cash" th:value="${user.cash}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="balance">마크돈</label>
+            <input type="balance" id="balance" name="balance" th:value="${balance}" readonly>
         </div>
     </form>
 

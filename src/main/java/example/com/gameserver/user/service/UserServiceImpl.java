@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
                 .email(requestDto.getEmail())
                 .phoneNumber(requestDto.getPhoneNumber())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
-                .balance(0)                    // 회원가입 시 잔액은 0원
+                .cash(0)                    // 회원가입 시 잔액은 0원
                 .role(UserRole.NEWBIE)        // 기본 역할은 NEWBIE
                 .isActive(true)
                 .build();
@@ -84,6 +84,13 @@ public class UserServiceImpl implements UserService {
         }
 
         user.deactivate(); // isActive = false
+    }
+
+
+    // 사용자 이름으로 balance 값을 가져오는 메서드
+    public Double getBalanceForUser(String username) {
+        Double balance = userRepository.findBalanceByUsername(username);
+        return balance != null ? balance : 0.0;  // balance가 null이면 0.0을 반환
     }
 
 
