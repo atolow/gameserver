@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>에러 발생!</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+<body>
+<script>
+    // 에러 메시지 표시
+    Swal.fire({
+        title: '에러 발생!',
+        text: '[[${errorMessage}]]',  <!-- 템플릿에서 변수 렌더링 -->
+        icon: 'error',
+        confirmButtonText: '확인'
+    }).then(function() {
+        // 'redirectUrl' 값이 유효한지 확인
+        var redirectUrl = '[[${redirectUrl}]]';  <!-- 올바르게 템플릿 변수 렌더링 -->
+        if (!redirectUrl || redirectUrl === 'undefined' || redirectUrl === '') {
+            redirectUrl = '/'; // 기본 홈 페이지로 리다이렉트
+        }
+        window.location.href = redirectUrl;  // 유효한 URL로 리다이렉트
+    });
+</script>
+</body>
+</html>

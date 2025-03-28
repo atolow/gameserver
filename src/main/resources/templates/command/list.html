@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>명령어 목록</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+
+<body>
+<div id="root">
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">
+                <i class="fas fa-gamepad"></i>
+                <span>Moon Server</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a th:href="@{/}">홈</a></li>
+                    <li><a th:href="@{/notices}">공지사항</a></li> <!-- 이건 서버 URL로 이동 -->
+                    <li><a th:href="@{/commands}">명령어</a></li>
+                    <li><a th:href="@{/boards}">커뮤니티</a></li>
+                </ul>
+            </nav>
+            <!-- 로그인 전 -->
+            <div class="login-form" sec:authorize="isAnonymous()">
+                <form method="post" action="/login">
+                    <input type="text" name="username" placeholder="아이디" required>
+                    <input type="password" name="password" placeholder="비밀번호" required>
+                    <button type="submit">로그인</button>
+                </form>
+            </div>
+
+
+            <!-- 로그인 후 -->
+            <div class="login-form" sec:authorize="isAuthenticated()" style="align-items: center;">
+                <div style="display: flex; align-items: center;">
+                    <p style="margin: 0; font-size: 1rem;">
+                        <span style="color: #f39c12; font-weight: bold;" th:text="${#authentication.name}"></span>
+                        <span style="color: #ffffff;">님 환영합니다.</span>
+                    </p>
+                    <form th:action="@{/logout}" method="post" style="margin-left: 1rem;">
+                        <button type="submit" class="login-button">로그아웃</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="list-container">
+            <h2>명령어</h2>
+
+            <!-- 헤더 라벨 -->
+            <div class="article-item" style="font-weight: bold; border-bottom: 2px solid #fff;">
+                <div style="width: 10%;">번호</div>
+                <div style="width: 45%;">제목</div>
+                <div style="width: 25%;">작성자</div>
+                <div style="width: 20%;">작성일</div>
+            </div>
+
+
+            <ul class="c" style="padding-left: 0;">
+                <li class="article-item" th:each="command, stat : ${commands.content}">
+                    <div style="width: 10%;"
+                         th:text="${commands.totalElements - (commands.number * commands.size + stat.index)}">1
+                    </div>
+                    <div style="width: 65%;">
+                        <a th:href="@{'/commands/' + ${command.id}}" class="article-title"
+                           th:text="${command.title}">제목</a>
+                    </div>
+                    <div style="width: 30%;" th:text="${command.author}">작성자</div>
+                    <div style="width: 30%;" th:text="${#temporals.format(command.createdAt, 'yyyy-MM-dd')}">2024-05-20
+                    </div>
+                </li>
+            </ul>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <span th:if="${commands.hasPrevious()}">
+                    <a th:href="@{/commands(page=${commands.number - 1})}">&laquo;</a>
+                </span>
+                <span th:each="pageNum : ${#numbers.sequence(0, commands.totalPages - 1)}">
+                    <a th:if="${pageNum != commands.number}"
+                       th:href="@{/commands(page=${pageNum})}"
+                       th:text="${pageNum + 1}">페이지</a>
+                    <span th:if="${pageNum == commands.number}" th:text="${pageNum + 1}" class="current"></span>
+                </span>
+                <span th:if="${commands.hasNext()}">
+                    <a th:href="@{/commands(page=${commands.number + 1})}">&raquo;</a>
+                </span>
+            </div>
+            <div class="write-button-container" sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/commands/create}">
+                    <button class="write-button">글쓰기</button>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Moon Server Start</p>
+    </footer>
+</div>
+</body>
+
+</html>

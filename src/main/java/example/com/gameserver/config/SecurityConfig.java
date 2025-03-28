@@ -1,5 +1,6 @@
 package example.com.gameserver.config;
 
+
 import example.com.gameserver.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -30,10 +31,10 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/register", "/users/register", "/login", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/notices" ,"/notices/**","/commands","/commands/**", "/boards","/boards/**",  "/error", "/error/**","/", "/register", "/users/register", "/login", "/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .userDetailsService(userDetailsService);     // 사용자 인증 로직 연결
+                .userDetailsService(userDetailsService);     // 사용자 인증 로직 연결ㄴ
 
         return http.build();
     }
@@ -42,4 +43,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // 비밀번호 해싱
     }
+
 }

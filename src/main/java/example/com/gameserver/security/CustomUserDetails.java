@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Getter
 public class CustomUserDetails implements UserDetails {
@@ -20,9 +21,10 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(
-                new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+        // 여기서 ROLE_ 접두어가 붙은 권한을 반환
+        return List.of(new SimpleGrantedAuthority(user.getRole().toString()));
     }
+
 
     @Override
     public String getPassword() {

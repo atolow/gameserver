@@ -52,16 +52,16 @@ public class NoticeController {
                              Model model) {
         noticeService.checkAdmin(userDetails.getUser());
         model.addAttribute("noticeCreateRequestDto", new NoticeCreateRequestDto());
-        return "notice/create"; // templates/notice/create.html
+        return "notice/write"; // templates/notice/create.html
     }
 
     // ✅ 등록 처리
-    @PostMapping("/create")
+    @PostMapping()
     public String create(@AuthenticationPrincipal CustomUserDetails userDetails,
                          @Valid @ModelAttribute("noticeCreateRequestDto") NoticeCreateRequestDto requestDto,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "notice/create";
+            return "notice/write";
         }
 
         noticeService.create(requestDto, userDetails.getUser());
@@ -70,8 +70,9 @@ public class NoticeController {
 
     // ✏️ 수정 폼
     @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable Long id, Model model) {
-        NoticeResponseDto notice = noticeService.getById(id);
+    public String editForm(@AuthenticationPrincipal CustomUserDetails userDetails,
+                           @PathVariable Long id, Model model) {
+        NoticeResponseDto notice = noticeService.getByIdEdit(id,userDetails.getUser());
         model.addAttribute("noticeUpdateRequestDto", new NoticeUpdateRequestDto(
                 notice.getTitle(), notice.getContent()
         ));

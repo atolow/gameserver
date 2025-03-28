@@ -1,7 +1,6 @@
 package example.com.gameserver.item.repository;
 
 import example.com.gameserver.item.domain.Item;
-import example.com.gameserver.trade.domain.BuyPost;
 import example.com.gameserver.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

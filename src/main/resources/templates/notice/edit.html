@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>공지 수정</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link
+            rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>"
+    />
+</head>
+
+<body>
+<div id="root">
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">
+                <i class="fas fa-gamepad"></i>
+                <span>Moon Server</span>
+            </a>
+            <nav>
+                <ul>
+                    <ul>
+                        <li><a th:href="@{/}">홈</a></li>
+                        <li><a th:href="@{/notices}">공지사항</a></li> <!-- 이건 서버 URL로 이동 -->
+                        <li><a th:href="@{/commands}">명령어</a></li>
+                        <li><a th:href="@{/boards}">커뮤니티</a></li>
+                    </ul>
+                </ul>
+            </nav>
+            <!-- 로그인 전 -->
+            <div class="login-form" sec:authorize="isAnonymous()">
+                <form method="post" action="/login">
+                    <input type="text" name="username" placeholder="아이디" required>
+                    <input type="password" name="password" placeholder="비밀번호" required>
+                    <button type="submit">로그인</button>
+                </form>
+            </div>
+
+
+            <!-- 로그인 후 -->
+            <div class="login-form" sec:authorize="isAuthenticated()" style="align-items: center;">
+                <div style="display: flex; align-items: center;">
+                    <p style="margin: 0; font-size: 1rem;">
+                        <span style="color: #f39c12; font-weight: bold;" th:text="${#authentication.name}"></span>
+                        <span style="color: #ffffff;">님 환영합니다.</span>
+                    </p>
+                    <form th:action="@{/logout}" method="post" style="margin-left: 1rem;">
+                        <button type="submit" class="login-button">로그아웃</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="edit-container">
+            <h2>공지 수정</h2>
+            <form th:action="@{'/notices/' + ${noticeId} + '/edit'}" method="post"
+                  th:object="${noticeUpdateRequestDto}">
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title" th:field="*{title}" placeholder="제목을 입력하세요" />
+                </div>
+                <div class="form-group">
+                    <label for="content">내용</label>
+                    <textarea id="content" name="content" th:field="*{content}" placeholder="내용을 입력하세요"></textarea>
+                </div>
+
+                <div class="edit-buttons">
+                    <button type="submit">저장</button>
+                    <button type="button" class="cancel-button" onclick="window.location.href='/notices'">취소</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Moon Server Start</p>
+    </footer>
+</div>
+</body>
+
+</html>
