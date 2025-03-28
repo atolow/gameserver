@@ -30,7 +30,7 @@ public class User  extends TimeBaseEntity {
     private String password;
 
     @Column(nullable = false)
-    private int balance;
+    private double balance;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -40,7 +40,7 @@ public class User  extends TimeBaseEntity {
     private boolean isActive = true;
 
     @Builder
-    public User(String username, String realName, String email, String phoneNumber, String password, int balance, UserRole role, boolean isActive) {
+    public User(String username, String realName, String email, String phoneNumber, String password, double balance, UserRole role, boolean isActive) {
         this.username = username;
         this.realName = realName;
         this.email = email;
@@ -51,7 +51,7 @@ public class User  extends TimeBaseEntity {
         this.isActive = isActive;
     }
 
-    public User(String username, String email, String password, int balance, UserRole role, boolean isActive) {
+    public User(String username, String email, String password, double balance, UserRole role, boolean isActive) {
         this.username = username;
         this.email = email;
         this.password = password;

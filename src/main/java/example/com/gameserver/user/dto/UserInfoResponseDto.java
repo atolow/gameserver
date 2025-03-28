@@ -9,7 +9,7 @@ import lombok.Getter;
 public class UserInfoResponseDto {
     private String username;
     private String email;
-    private int balance;
+    private double balance;
 
     public static UserInfoResponseDto from(User user) {
         return UserInfoResponseDto.builder()
