@@ -31,7 +31,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/notices" ,"/notices/**","/commands","/commands/**", "/boards","/boards/**",  "/error", "/error/**","/", "/register", "/users/register", "/login", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/users/balances","/notices" ,"/notices/**","/commands","/commands/**", "/boards","/boards/**",  "/error", "/error/**","/", "/register", "/users/register", "/login", "/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService);     // 사용자 인증 로직 연결ㄴ
