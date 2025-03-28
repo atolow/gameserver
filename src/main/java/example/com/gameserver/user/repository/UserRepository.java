@@ -45,7 +45,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT c.username, c.balance " +
             "FROM CMI_users c " +
-            "JOIN users u ON c.username = u.username " +
+            "LEFT JOIN users u ON c.username = u.username " +
+            "WHERE c.username NOT LIKE 'town%' " +
+            "AND c.balance > 0 " +
             "ORDER BY c.balance DESC", nativeQuery = true)
     List<Object[]> findBalanceFromCMIUsers();
 
