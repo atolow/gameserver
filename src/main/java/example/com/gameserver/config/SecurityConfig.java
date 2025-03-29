@@ -39,7 +39,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/balances","/notices" ,"/notices/**","/commands","/commands/**", "/boards","/boards/**", "/error", "/error/**","/", "/register", "/users/register", "/login", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/minecraft/online-users","/api/minecraft/online-users","/users/balances","/notices" ,"/notices/**","/commands","/commands/**", "/boards","/boards/**", "/error", "/error/**","/", "/register", "/users/register", "/login", "/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService);     // 사용자 인증 로직 연결
