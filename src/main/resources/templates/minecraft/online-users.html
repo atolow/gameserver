@@ -1,22 +1,30 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${command.title}">상세 페이지</title>
+    <title>Moon Server 홈페이지</title>
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon"
-          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎮</text></svg>">
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    <style>
+        td {
+            padding: 10px; /* 여백 추가 */
+        }
+    </style>
 </head>
 
 <body>
 <div id="root">
     <header>
         <div class="header-content">
-            <a href="/" class="logo">
+            <a href="#" class="logo">
                 <i class="fas fa-gamepad"></i>
                 <span>Moon Server</span>
             </a>
@@ -28,6 +36,7 @@
                     <li><a th:href="@{/boards}">커뮤니티</a></li>
                     <li><a th:href="@{/users/balances}">돈</a></li>
                     <li><a th:href="@{/minecraft/online-users}">유저</a></li>
+
                 </ul>
             </nav>
 
@@ -56,28 +65,13 @@
     </header>
 
     <main>
-        <div class="detail-container">
-            <h2>명령어</h2>
-            <hr>
-            <p>
-                <strong th:text="${command.title}">제목</strong><br>
-                <span th:text="${command.author}">작성자 | </span>
-                <span th:text="${#temporals.format(command.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
-            </p>
-
-            <!-- ✅ 자동 높이 조절되는 textarea -->
-            <textarea id="commandContent" readonly oninput="resize(this)"
-                      class="auto-resize-textarea" th:text="${command.content}">
-            </textarea>
-
-            <!-- ✅ 관리자만 수정/삭제 버튼 -->
-            <div class="detail-buttons" sec:authorize="hasRole('ADMIN')">
-                <a th:href="@{'/commands/' + ${command.id} + '/edit'}">
-                    <button class="edit-button">수정</button>
-                </a>
-                <form th:action="@{'/commands/' + ${command.id} + '/delete'}" method="post" style="display:inline;">
-                    <button type="submit" onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</button>
-                </form>
+        <div class="online-users-card">
+            <h3>현재 접속 중인 유저</h3>
+            <div class="online-users-list">
+                <div class="online-user" th:each="user : ${users}">
+                    <img th:src="'https://minotar.net/avatar/' + ${user} + '/32'" th:alt="${user} + ' 스킨'">
+                    <span th:text="${user}">유저이름</span>
+                </div>
             </div>
         </div>
     </main>
@@ -86,22 +80,5 @@
         <p>&copy; 2025 Moon Server Start</p>
     </footer>
 </div>
-
-<!-- ✅ 자동 높이 조절 스크립트 -->
-<script>
-    window.addEventListener("load", () => {
-        const contentBox = document.getElementById("commandContent");
-        if (contentBox) {
-            contentBox.style.height = "auto";
-            contentBox.style.height = contentBox.scrollHeight + "px";
-        }
-    });
-
-    function resize(textarea) {
-        textarea.style.height = 'auto';
-        textarea.style.height = textarea.scrollHeight + 'px';
-    }
-</script>
-
 </body>
 </html>

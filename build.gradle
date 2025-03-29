@@ -18,10 +18,11 @@ configurations {
         extendsFrom annotationProcessor
     }
 }
-
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' } // JitPack 저장소 추가
 }
+
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -36,6 +37,12 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+
+
+
+
+
 }
 
 tasks.named('test') {
