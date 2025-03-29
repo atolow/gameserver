@@ -74,11 +74,17 @@
                         <th>마크 돈</th>
                     </tr>
                     </thead>
-                    <tbody>
                     <tr th:each="balance : ${balances}">
-                        <td th:text="${balance[0]}"></td> <!-- Username -->
-                        <td th:text="${balance[1]}"></td> <!-- Balance -->
+                        <td>
+                            <div class="player-info">
+                                <img th:src="'https://minotar.net/avatar/' + ${balance[0]} + '/32'"
+                                     th:alt="${balance[0]} + ' 스킨'">
+                                <span th:text="${balance[0]}"></span>
+                            </div>
+                        </td>
+                        <td th:text="${balance[1]}"></td>
                     </tr>
+
                     <tr th:if="${#lists.isEmpty(balances)}">
                         <td colspan="2">데이터가 없습니다.</td>
                     </tr>
