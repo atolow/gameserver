@@ -1266,3 +1266,31 @@ body {
 
 
 
+
+
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 이미지와 텍스트 간격 */
+}
+
+.player-info img {
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+  border-radius: 4px; /* 이미지 모서리 둥글게 */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table td, table th {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  vertical-align: middle;
+}
+
