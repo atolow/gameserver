@@ -15,7 +15,7 @@
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
     <style>
         td {
-            padding: 10px; /* 여백 추가 */
+            padding: 10px;
         }
     </style>
 </head>
@@ -35,63 +35,78 @@
                     <li><a th:href="@{/commands}">명령어</a></li>
                     <li><a th:href="@{/boards}">커뮤니티</a></li>
                     <li><a th:href="@{/users/balances}">돈</a></li>
-
+                    <li><a th:href="@{/minecraft/online-users}">유저</a></li>
                 </ul>
             </nav>
-
-            <!-- 로그인 전 -->
-            <div class="login-form" sec:authorize="isAnonymous()">
-                <form method="post" action="/login">
-                    <input type="text" name="username" placeholder="아이디" required>
-                    <input type="password" name="password" placeholder="비밀번호" required>
-                    <button type="submit">로그인</button>
-                </form>
-            </div>
-
-            <!-- 로그인 후 -->
-            <div class="login-form" sec:authorize="isAuthenticated()" style="align-items: center;">
-                <div style="display: flex; align-items: center;">
-                    <p style="margin: 0; font-size: 1rem;">
-                        <span style="color: #f39c12; font-weight: bold;" th:text="${#authentication.name}"></span>
-                        <span style="color: #ffffff;">님 환영합니다.</span>
-                    </p>
-                    <form th:action="@{/logout}" method="post" style="margin-left: 1rem;">
-                        <button type="submit" class="login-button">로그아웃</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </header>
 
     <main>
-        <section id="home" class="active">
-            <div class="hero">
-                <h2>유저의 잔액 정보</h2>
-                <table style="margin-left: auto; margin-right: auto;">
-                    <thead>
-                    <tr>
-                        <th>아이디</th>
-                        <th>마크 돈</th>
-                    </tr>
-                    </thead>
-                    <tr th:each="balance : ${balances}">
-                        <td>
-                            <div class="player-info">
-                                <img th:src="'https://minotar.net/avatar/' + ${balance[0]} + '/32'"
-                                     th:alt="${balance[0]} + ' 스킨'">
-                                <span th:text="${balance[0]}"></span>
-                            </div>
-                        </td>
-                        <td th:text="${balance[1]}"></td>
-                    </tr>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem;">
 
-                    <tr th:if="${#lists.isEmpty(balances)}">
-                        <td colspan="2">데이터가 없습니다.</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <!-- 왼쪽: 유저 잔액 정보 -->
+            <section id="home" class="active" style="flex: 1; min-width: 300px;">
+                <div class="hero">
+                    <h2>유저의 잔액 정보</h2>
+                    <table style="margin-left: auto; margin-right: auto;">
+                        <thead>
+                        <tr>
+                            <th>아이디</th>
+                            <th>마크 돈</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="balance : ${balances}">
+                            <td>
+                                <div class="player-info">
+                                    <img th:src="'https://minotar.net/avatar/' + ${balance[0]} + '/32'"
+                                         th:alt="${balance[0]} + ' 스킨'">
+                                    <span th:text="${balance[0]}"></span>
+                                </div>
+                            </td>
+                            <td th:text="${balance[1]}"></td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(balances)}">
+                            <td colspan="2">데이터가 없습니다.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 오른쪽: 로그인 카드 -->
+            <div class="hero-login-card" style="
+        background-color: #2c3e50;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        min-width: 280px;
+        max-width: 360px;
+        flex: 0 0 auto;
+      ">
+                <!-- 로그인 전 -->
+                <div class="login-form" sec:authorize="isAnonymous()">
+                    <form method="post" action="/login" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <input type="text" name="username" placeholder="아이디" required style="padding: 0.5rem;">
+                        <input type="password" name="password" placeholder="비밀번호" required style="padding: 0.5rem;">
+                        <button type="submit" class="login-button" style="width: 100%;">로그인</button>
+                    </form>
+                </div>
+
+                <!-- 로그인 후 -->
+                <div class="login-form" sec:authorize="isAuthenticated()" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                    <p style="margin: 0; font-size: 1rem;">
+                        <span style="color: #f39c12; font-weight: bold;" th:text="${#authentication.name}"></span>
+                        <span style="color: #ffffff;">님 환영합니다.</span>
+                    </p>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="login-button" style="width: 100%;">로그아웃</button>
+                    </form>
+                </div>
             </div>
-        </section>
+
+        </div>
     </main>
 
     <footer>

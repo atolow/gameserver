@@ -39,28 +39,6 @@
 
                 </ul>
             </nav>
-
-            <!-- 로그인 전 -->
-            <div class="login-form" sec:authorize="isAnonymous()">
-                <form method="post" action="/login">
-                    <input type="text" name="username" placeholder="아이디" required>
-                    <input type="password" name="password" placeholder="비밀번호" required>
-                    <button type="submit">로그인</button>
-                </form>
-            </div>
-
-            <!-- 로그인 후 -->
-            <div class="login-form" sec:authorize="isAuthenticated()" style="align-items: center;">
-                <div style="display: flex; align-items: center;">
-                    <p style="margin: 0; font-size: 1rem;">
-                        <span style="color: #f39c12; font-weight: bold;" th:text="${#authentication.name}"></span>
-                        <span style="color: #ffffff;">님 환영합니다.</span>
-                    </p>
-                    <form th:action="@{/logout}" method="post" style="margin-left: 1rem;">
-                        <button type="submit" class="login-button">로그아웃</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </header>
 
@@ -74,6 +52,7 @@
                 </div>
             </div>
         </div>
+
     </main>
 
     <footer>
