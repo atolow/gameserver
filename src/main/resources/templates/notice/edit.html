@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8" />
@@ -15,7 +16,7 @@
     />
     <link
             rel="icon"
-            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>"
+            href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎮</text></svg>"
     />
 </head>
 
@@ -23,66 +24,77 @@
 <div id="root">
     <header>
         <div class="header-content">
-            <a href="/" class="logo">
+            <a th:href="@{/}" class="logo">
                 <i class="fas fa-gamepad"></i>
                 <span>Moon Server</span>
             </a>
             <nav>
                 <ul>
-                    <ul>
-                        <li><a th:href="@{/}">홈</a></li>
-                        <li><a th:href="@{/notices}">공지사항</a></li> <!-- 이건 서버 URL로 이동 -->
-                        <li><a th:href="@{/commands}">명령어</a></li>
-                        <li><a th:href="@{/boards}">커뮤니티</a></li>
-                        <li><a th:href="@{/users/balances}">돈</a></li>
-                        <li><a th:href="@{/minecraft/online-users}">유저</a></li>
-                    </ul>
+                    <li><a th:href="@{/}">홈</a></li>
+                    <li><a th:href="@{/notices}">공지사항</a></li>
+                    <li><a th:href="@{/commands}">명령어</a></li>
+                    <li><a th:href="@{/boards}">커뮤니티</a></li>
+                    <li><a th:href="@{/users/balances}">돈</a></li>
+                    <li><a th:href="@{/minecraft/online-users}">유저</a></li>
                 </ul>
             </nav>
-            <!-- 로그인 전 -->
-            <div class="login-form" sec:authorize="isAnonymous()">
-                <form method="post" action="/login">
-                    <input type="text" name="username" placeholder="아이디" required>
-                    <input type="password" name="password" placeholder="비밀번호" required>
-                    <button type="submit">로그인</button>
-                </form>
-            </div>
-
-
-            <!-- 로그인 후 -->
-            <div class="login-form" sec:authorize="isAuthenticated()" style="align-items: center;">
-                <div style="display: flex; align-items: center;">
-                    <p style="margin: 0; font-size: 1rem;">
-                        <span style="color: #f39c12; font-weight: bold;" th:text="${#authentication.name}"></span>
-                        <span style="color: #ffffff;">님 환영합니다.</span>
-                    </p>
-                    <form th:action="@{/logout}" method="post" style="margin-left: 1rem;">
-                        <button type="submit" class="login-button">로그아웃</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </header>
 
     <main>
-        <div class="edit-container">
-            <h2>공지 수정</h2>
-            <form th:action="@{'/notices/' + ${noticeId} + '/edit'}" method="post"
-                  th:object="${noticeUpdateRequestDto}">
-                <div class="form-group">
-                    <label for="title">제목</label>
-                    <input type="text" id="title" name="title" th:field="*{title}" placeholder="제목을 입력하세요" />
-                </div>
-                <div class="form-group">
-                    <label for="content">내용</label>
-                    <textarea id="content" name="content" th:field="*{content}" placeholder="내용을 입력하세요"></textarea>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem;">
+
+            <!-- 왼쪽: 공지 수정 폼 -->
+            <div class="edit-container" style="flex: 1; min-width: 300px;">
+                <h2>공지 수정</h2>
+                <form th:action="@{'/notices/' + ${noticeId} + '/edit'}" method="post" th:object="${noticeUpdateRequestDto}">
+                    <div class="form-group">
+                        <label for="title">제목</label>
+                        <input type="text" id="title" name="title" th:field="*{title}" placeholder="제목을 입력하세요" />
+                    </div>
+                    <div class="form-group">
+                        <label for="content">내용</label>
+                        <textarea id="content" name="content" th:field="*{content}" placeholder="내용을 입력하세요"></textarea>
+                    </div>
+
+                    <div class="edit-buttons">
+                        <button type="submit">저장</button>
+                        <button type="button" class="cancel-button" onclick="window.location.href='/notices'">취소</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 오른쪽: 로그인 카드 -->
+            <div class="hero-login-card" style="
+        background-color: #2c3e50;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        min-width: 280px;
+        max-width: 360px;
+        flex: 0 0 auto;
+      ">
+                <!-- 로그인 전 -->
+                <div class="login-form" sec:authorize="isAnonymous()">
+                    <form method="post" action="/login" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <input type="text" name="username" placeholder="아이디" required style="padding: 0.5rem;">
+                        <input type="password" name="password" placeholder="비밀번호" required style="padding: 0.5rem;">
+                        <button type="submit" class="login-button" style="width: 100%;">로그인</button>
+                    </form>
                 </div>
 
-                <div class="edit-buttons">
-                    <button type="submit">저장</button>
-                    <button type="button" class="cancel-button" onclick="window.location.href='/notices'">취소</button>
+                <!-- 로그인 후 -->
+                <div class="login-form" sec:authorize="isAuthenticated()" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                    <p style="margin: 0; font-size: 1rem;">
+                        <span style="color: #f39c12; font-weight: bold;" th:text="${#authentication.name}"></span>
+                        <span style="color: #ffffff;">님 환영합니다.</span>
+                    </p>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="login-button" style="width: 100%;">로그아웃</button>
+                    </form>
                 </div>
-            </form>
+            </div>
+
         </div>
     </main>
 
@@ -91,5 +103,4 @@
     </footer>
 </div>
 </body>
-
 </html>

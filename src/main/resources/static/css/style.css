@@ -825,16 +825,25 @@ body {
 }
 
 .list-container {
+  background-color: #34495e;
+  padding: 3rem;
+  text-align: center;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.testwow {
   background-color: #2c3e50;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   padding: 2rem;
   width: 80%;
-  height: 1400px;
+  height: auto !important; /* 기존 height: 1400px 제거 */
+  flex: 1;
   max-width: 1400px;
   margin: 2rem auto;
   text-align: left;
-
 }
 
 .article-title {
@@ -930,18 +939,17 @@ body {
 
 
 .detail-container {
-  background-color: #2c3e50;
+  background-color: #34495e;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  padding: 2rem;
+  padding: 3rem;
   width: 80%;
   max-width: 1400px;
-  margin: 2rem auto;
   text-align: left;
   max-height: 1400px;
-
-
+  margin-bottom: 2rem;
 }
+
 
 .detail-container h2 {
   margin-bottom: 1.5rem;
@@ -988,16 +996,29 @@ body {
 
 
 
+.detail-container {
 
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 3rem;
+  width: 80%;
+  max-width: 1400px;
+  text-align: left;
+  max-height: 1400px;
+  margin-bottom: 2rem;
+}
 
 
 .write-container {
-  max-width: 800px;
-  margin: 2rem auto;
   background-color: #34495e;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 3rem;
+  width: 80%;
+  max-width: 1400px;
+  text-align: left;
+  max-height: 1400px;
+  margin-bottom: 2rem;
   color: #fff;
 }
 .write-container h2 {
@@ -1060,14 +1081,18 @@ body {
 }
 
 .edit-container {
-  max-width: 800px;
-  margin: 2rem auto;
   background-color: #34495e;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 3rem;
+  width: 80%;
+  max-width: 1400px;
+  text-align: left;
+  max-height: 1400px;
+  margin-bottom: 2rem;
   color: #fff;
 }
+
 
 .edit-container h2 {
   margin-bottom: 1.5rem;
@@ -1347,4 +1372,47 @@ table td, table th {
   color: #ffffff;
   font-size: 1rem;
   font-weight: 500;
+}
+
+
+.hero-login-card {
+  background-color: #2c3e50;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  min-width: 280px;
+  max-width: 360px;
+}
+
+@media (max-width: 768px) {
+  main > div {
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero-login-card {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  display: flex;
+  align-items: stretch;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
