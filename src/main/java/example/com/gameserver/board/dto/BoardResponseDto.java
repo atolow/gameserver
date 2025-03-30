@@ -20,12 +20,12 @@ public class BoardResponseDto {
     private final List<CommentResponseDto> comments; // 댓글 목록
 
     // 생성자
-    public BoardResponseDto(Long id, String title, String content, String username,
+    public BoardResponseDto(Long id, String title, String content, String author,
                             LocalDateTime createdAt, LocalDateTime modifiedAt, List<CommentResponseDto> comments) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.author = username;
+        this.author = author;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.comments = comments;

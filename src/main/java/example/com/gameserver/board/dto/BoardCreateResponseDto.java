@@ -11,14 +11,14 @@ public class BoardCreateResponseDto {
     private Long id; // 게시글 ID
     private String title; // 게시글 제목
     private String content; // 게시글 내용
-    private String username; // 작성자의 username
+    private String author; // 작성자의 username
 
     // 생성자
-    public BoardCreateResponseDto(Long id, String title, String content, String username) {
+    public BoardCreateResponseDto(Long id, String title, String content, String author) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.username = username;
+        this.author = author;
     }
 
     // 엔티티 -> DTO 변환 메서드
