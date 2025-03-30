@@ -14,7 +14,7 @@ public class BoardResponseDto {
     private final Long id;
     private final String title;
     private final String content;
-    private final String username; // 작성자
+    private final String author; // 작성자
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
     private final List<CommentResponseDto> comments; // 댓글 목록
@@ -25,7 +25,7 @@ public class BoardResponseDto {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.username = username;
+        this.author = username;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.comments = comments;

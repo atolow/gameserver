@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${command.title}">상세 페이지</title>
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="icon"
           href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎮</text></svg>">
@@ -16,7 +18,7 @@
 <div id="root">
     <header>
         <div class="header-content">
-            <a href="/" class="logo">
+            <a th:href="@{/}" class="logo">
                 <i class="fas fa-gamepad"></i>
                 <span>Moon Server</span>
             </a>
@@ -30,54 +32,66 @@
                     <li><a th:href="@{/minecraft/online-users}">유저</a></li>
                 </ul>
             </nav>
-
-            <!-- 로그인 전 -->
-            <div class="login-form" sec:authorize="isAnonymous()">
-                <form method="post" action="/login">
-                    <input type="text" name="username" placeholder="아이디" required>
-                    <input type="password" name="password" placeholder="비밀번호" required>
-                    <button type="submit">로그인</button>
-                </form>
-            </div>
-
-            <!-- 로그인 후 -->
-            <div class="login-form" sec:authorize="isAuthenticated()" style="align-items: center;">
-                <div style="display: flex; align-items: center;">
-                    <p style="margin: 0; font-size: 1rem;">
-                        <span style="color: #f39c12; font-weight: bold;" th:text="${#authentication.name}"></span>
-                        <span style="color: #ffffff;">님 환영합니다.</span>
-                    </p>
-                    <form th:action="@{/logout}" method="post" style="margin-left: 1rem;">
-                        <button type="submit" class="login-button">로그아웃</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </header>
 
     <main>
-        <div class="detail-container">
-            <h2>명령어</h2>
-            <hr>
-            <p>
-                <strong th:text="${command.title}">제목</strong><br>
-                <span th:text="${command.author}">작성자 | </span>
-                <span th:text="${#temporals.format(command.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
-            </p>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem;">
+            <!-- 왼쪽: 공지 상세 보기 -->
+            <div class="detail-container" style="flex: 1; min-width: 300px;">
+                <h2>명령어</h2>
+                <hr>
+                <p>
+                    <strong th:text="${command.title}">제목</strong><br>
+                    <span th:text="${command.author}">작성자 | </span>
+                    <span th:text="${#temporals.format(command.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
+                </p>
 
-            <!-- ✅ 자동 높이 조절되는 textarea -->
-            <textarea id="commandContent" readonly oninput="resize(this)"
-                      class="auto-resize-textarea" th:text="${command.content}">
-            </textarea>
+                <!-- ✅ 자동 높이 조절되는 textarea -->
+                <textarea id="commandContent" readonly oninput="resize(this)"
+                          class="auto-resize-textarea" th:text="${command.content}">
+                </textarea>
 
-            <!-- ✅ 관리자만 수정/삭제 버튼 -->
-            <div class="detail-buttons" sec:authorize="hasRole('ADMIN')">
-                <a th:href="@{'/commands/' + ${command.id} + '/edit'}">
-                    <button class="edit-button">수정</button>
-                </a>
-                <form th:action="@{'/commands/' + ${command.id} + '/delete'}" method="post" style="display:inline;">
-                    <button type="submit" onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</button>
-                </form>
+                <!-- ✅ 관리자만 수정/삭제 버튼 표시 -->
+                <div class="detail-buttons" sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{'/commands/' + ${command.id} + '/edit'}">
+                        <button class="edit-button">수정</button>
+                    </a>
+                    <form th:action="@{'/commands/' + ${command.id} + '/delete'}" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 오른쪽: 로그인 카드 -->
+            <div class="hero-login-card" style="
+                background-color: #2c3e50;
+                padding: 2rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                min-width: 280px;
+                max-width: 360px;
+                flex: 0 0 auto;
+            ">
+                <!-- 로그인 전 -->
+                <div class="login-form" sec:authorize="isAnonymous()">
+                    <form method="post" action="/login" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <input type="text" name="username" placeholder="아이디" required style="padding: 0.5rem;">
+                        <input type="password" name="password" placeholder="비밀번호" required style="padding: 0.5rem;">
+                        <button type="submit" class="login-button" style="width: 100%;">로그인</button>
+                    </form>
+                </div>
+
+                <!-- 로그인 후 -->
+                <div class="login-form" sec:authorize="isAuthenticated()" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                    <p style="margin: 0; font-size: 1rem;">
+                        <span style="color: #f39c12; font-weight: bold;" th:text="${#authentication.name}"></span>
+                        <span style="color: #ffffff;">님 환영합니다.</span>
+                    </p>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="login-button" style="width: 100%;">로그아웃</button>
+                    </form>
+                </div>
             </div>
         </div>
     </main>
