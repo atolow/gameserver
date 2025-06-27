@@ -16,7 +16,6 @@ public class MinecraftController {
     @PostMapping("/api/minecraft/online-users")
     @ResponseBody
     public String receiveOnlineUsers(@RequestBody List<String> users) {
-        System.out.println("받은 유저 목록: " + users); // 디버깅용
         onlineUsers.clear();
         onlineUsers.addAll(users);
         return "OK";

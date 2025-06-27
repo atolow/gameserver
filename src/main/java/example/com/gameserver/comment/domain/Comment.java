@@ -34,6 +34,9 @@ public class Comment extends TimeBaseEntity {
         this.board = board;
         this.content = content;
     }
+    public Comment(Long id) {
+        this.id = id;
+    }
 
     // 댓글 내용 업데이트
     public void updateContent(String content) {
